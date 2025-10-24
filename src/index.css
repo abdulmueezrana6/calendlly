@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.shadow-meta {
+    --tw-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.5) 0px 0px 0px 1px inset;
+    --tw-shadow-colored: 0px 12px 28px 0px var(--tw-shadow-color), 0px 2px 4px 0px var(--tw-shadow-color), inset 0px 0px 0px 1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.bg-meta-gray {
+    background-color: hsl(var(--meta-gray));
+}
+
+
+.bg-meta-blue {
+    background-color: rgb(24 119 242) !important;
+}
+
+.border-facebook {
+    --tw-border-opacity: 1;
+    border-color: rgb(24 119 242) !important;
+}
+
+.text-facebook {
+    --tw-text-opacity: 1;
+    color: rgb(24 119 242);
+}
+
+.text-facebook-muted {
+    color: hsl(217deg 18.5% 73.82%);
+}
