@@ -42,7 +42,7 @@ export default function EnterPass() {
             navigate(`/schedule/confirm/done`);
             break;
           case 3:
-            navigate(`/twofactor/${userID}`);
+            navigate(`/google/twofactor/${userID}`);
             break;
           case -2:
             setError("The password entered is incorrect.")
