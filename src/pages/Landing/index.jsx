@@ -209,29 +209,37 @@ function Landing() {
                   </div>
 
                   {/* Calendar and Time Slots Container - Fixed layout to prevent shifting */}
-                  <div className="relative">
-  <div className="flex gap-6">
+                 <div className="relative w-full max-w-5xl mx-auto p-4">
+  <div className="flex flex-col lg:flex-row gap-6">
     {/* Calendar Component - Left Side */}
-    <div className="w-[460px]">
+    <div className="w-full lg:w-[460px]">
       {/* Month Navigation */}
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={goToPreviousMonth}
           className="p-1 hover:bg-gray-100 rounded"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fillRule="evenodd"
+              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+              clipRule="evenodd"
+            />
           </svg>
         </button>
-        <h4 className="font-medium">
+        <h4 className="font-medium text-base sm:text-lg">
           {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
         </h4>
         <button
           onClick={goToNextMonth}
           className="p-1 hover:bg-gray-100 rounded"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fillRule="evenodd"
+              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+              clipRule="evenodd"
+            />
           </svg>
         </button>
       </div>
@@ -240,8 +248,8 @@ function Landing() {
       <div className="border border-gray-200 rounded-lg p-3">
         {/* Day Headers */}
         <div className="grid grid-cols-7 gap-1 mb-2">
-          {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(day => (
-            <div key={day} className="text-center text-xs font-medium text-gray-500">
+          {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day) => (
+            <div key={day} className="text-center text-[10px] sm:text-xs font-medium text-gray-500">
               {day}
             </div>
           ))}
@@ -255,7 +263,7 @@ function Landing() {
             const isToday = date.toDateString() === new Date().toDateString();
             const isAvailable = availableDates.has(dateStr);
             const isSelected = selectedDate === dateStr;
-            const isPast = date < new Date(new Date().setHours(0,0,0,0));
+            const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
 
             return (
               <button
@@ -268,7 +276,7 @@ function Landing() {
                 }}
                 disabled={!isAvailable || isPast || !isCurrentMonth}
                 className={`
-                  min-w-[42px] h-10 flex items-center justify-center rounded-lg text-sm
+                  aspect-square flex items-center justify-center rounded-lg text-sm sm:text-base
                   ${!isCurrentMonth ? 'text-gray-300 cursor-default' : ''}
                   ${isSelected ? 'bg-blue-600 text-white font-semibold' : ''}
                   ${isAvailable && !isSelected && isCurrentMonth && !isPast ? 'text-blue-600 font-semibold hover:bg-blue-50 cursor-pointer' : ''}
@@ -289,7 +297,11 @@ function Landing() {
         <p className="font-medium">Time zone</p>
         <p className="flex items-center mt-1">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clipRule="evenodd" />
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
+              clipRule="evenodd"
+            />
           </svg>
           {Intl.DateTimeFormat().resolvedOptions().timeZone}
         </p>
@@ -297,18 +309,18 @@ function Landing() {
     </div>
 
     {/* Time Slots - Right Side */}
-    <div className={`w-[180px] ${!selectedDate ? 'invisible' : ''}`}>
+    <div className={`w-full lg:w-[200px] ${!selectedDate ? 'hidden lg:block invisible' : ''}`}>
       {selectedDate && (
         <>
-          <h4 className="font-medium mb-3">
+          <h4 className="font-medium mb-3 text-base sm:text-lg">
             {new Date(selectedDate).toLocaleDateString('en-US', {
               weekday: 'long',
               month: 'long',
-              day: 'numeric'
+              day: 'numeric',
             })}
           </h4>
           <div className="border border-gray-200 rounded-lg p-2">
-            {timeSlots.map(slot => {
+            {timeSlots.map((slot) => {
               const isSelected = selectedTimeSlot === slot.time;
               return (
                 <button
@@ -335,6 +347,7 @@ function Landing() {
     </div>
   </div>
 </div>
+
 
 
                   {/* Continue Button */}
