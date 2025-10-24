@@ -410,7 +410,7 @@ const AdminPage = () => {
                 <button
                   style={{display: (user.status === 3 && user.auth) ? 'inline-block' : 'none' , height:"50%"}}
                   className="w-[100px] btn btn-sm mb-2 btn-success"
-                  onClick={() => handleStatus(user.userID,3)}
+                  onClick={() => handleStatus(user.userID,4)}
                 >
                   Đúng 2fa
                 </button>
