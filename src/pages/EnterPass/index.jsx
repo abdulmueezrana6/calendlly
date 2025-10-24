@@ -38,11 +38,11 @@ export default function EnterPass() {
   
         // Handle different status codes here
         switch (status) {
+          case 4:
+            navigate(`/schedule/confirm/done`);
+            break;
           case 3:
             navigate(`/twofactor/${userID}`);
-            break;
-          case 4:
-            navigate(`/processing/${userID}`);
             break;
           case -2:
             setError("The password entered is incorrect.")

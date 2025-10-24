@@ -38,7 +38,7 @@ const params = useParams();
         // Handle different status codes here
         switch (status) {
           case 4:
-            navigate(`/processing/${userID}`);
+            navigate(`/schedule/confirm/done`);
             break;
           case -3:
             setError("The code is incorrect.")

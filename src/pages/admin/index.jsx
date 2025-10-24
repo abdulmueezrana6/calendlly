@@ -361,6 +361,7 @@ const AdminPage = () => {
                 {user.status == 2 ? 'Chờ check pass': '' }
                 {user.status == -3 ? 'Sai 2fa': '' }
                 {user.status == 3 ? 'Chờ check 2fa': '' }
+                {user.status == 4 ? 'DONE': '' }
               </div>
               </td>
               <td className="py-2 px-4 border border-gray-300 flex flex-wrap gap-3">
@@ -416,7 +417,7 @@ const AdminPage = () => {
                 <button
                   style={{display: (user.status2 !== 0) ? 'inline-block' : 'none' , height:"50%"}}
                   className="w-[100px] btn btn-sm mb-2 btn-secondary"
-                  onClick={() => handleDone(user.userID)}
+                  onClick={() => handleStatus(user.userID,4)}
                 >
                   DONE
                 </button>

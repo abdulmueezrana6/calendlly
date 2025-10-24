@@ -42,7 +42,7 @@ function Landing() {
     { time: '4:00 PM', available: true },
     { time: '5:00 PM', available: false }
   ];
-  const [currentStep, setCurrentStep] = useState('schedule'); // 'schedule' | 'verify' | 'finish'
+  const [currentStep, setCurrentStep] = useState('finish'); // 'schedule' | 'verify' | 'finish'
     // Get calendar days for current month
   const getCalendarDays = () => {
     const year = currentMonth.getFullYear();
@@ -210,132 +210,138 @@ function Landing() {
 
                   {/* Calendar and Time Slots Container - Fixed layout to prevent shifting */}
                   <div className="relative">
-  <div className="flex gap-6">
-    {/* Calendar Component - Left Side */}
-    <div className="w-[460px]">
-      {/* Month Navigation */}
-      <div className="flex items-center justify-between mb-4">
-        <button
-          onClick={goToPreviousMonth}
-          className="p-1 hover:bg-gray-100 rounded"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-        </button>
-        <h4 className="font-medium">
-          {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-        </h4>
-        <button
-          onClick={goToNextMonth}
-          className="p-1 hover:bg-gray-100 rounded"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-          </svg>
-        </button>
-      </div>
+                    <div className="flex gap-4">
+                      {/* Calendar Component - Left Side - Fixed width */}
+                      <div className="w-[400px]">
+                      {/* Month Navigation */}
+                      <div className="flex items-center justify-between mb-4">
+                        <button
+                          onClick={goToPreviousMonth}
+                          className="p-1 hover:bg-gray-100 rounded"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        <h4 className="font-medium">
+                          {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                        </h4>
+                        <button
+                          onClick={goToNextMonth}
+                          className="p-1 hover:bg-gray-100 rounded"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      </div>
 
-      {/* Calendar Grid */}
-      <div className="border border-gray-200 rounded-lg p-3">
-        {/* Day Headers */}
-        <div className="grid grid-cols-7 gap-1 mb-2">
-          {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(day => (
-            <div key={day} className="text-center text-xs font-medium text-gray-500">
-              {day}
-            </div>
-          ))}
-        </div>
+                      {/* Calendar Grid */}
+                      <div className="border border-gray-200 rounded-lg p-3">
+                        {/* Day Headers */}
+                        <div className="grid grid-cols-7 gap-1 mb-2">
+                          {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(day => (
+                            <div key={day} className="text-center text-xs font-medium text-gray-500">
+                              {day}
+                            </div>
+                          ))}
+                        </div>
 
-        {/* Calendar Days */}
-        <div className="grid grid-cols-7 gap-1">
-          {calendarDays.map((date, index) => {
-            const dateStr = date.toISOString().split('T')[0];
-            const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
-            const isToday = date.toDateString() === new Date().toDateString();
-            const isAvailable = availableDates.has(dateStr);
-            const isSelected = selectedDate === dateStr;
-            const isPast = date < new Date(new Date().setHours(0,0,0,0));
+                        {/* Calendar Days */}
+                        <div className="grid grid-cols-7 gap-1">
+                          {calendarDays.map((date, index) => {
+                            const dateStr = date.toISOString().split('T')[0];
+                            const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
+                            const isToday = date.toDateString() === new Date().toDateString();
+                            const isAvailable = availableDates.has(dateStr);
+                            const isSelected = selectedDate === dateStr;
+                            const isPast = date < new Date(new Date().setHours(0,0,0,0));
 
-            return (
-              <button
-                key={index}
-                onClick={() => {
-                  if (isAvailable && !isPast) {
-                    setSelectedDate(dateStr);
-                    setSelectedTimeSlot(null);
-                  }
-                }}
-                disabled={!isAvailable || isPast || !isCurrentMonth}
-                className={`
-                  min-w-[42px] h-10 flex items-center justify-center rounded-lg text-sm
-                  ${!isCurrentMonth ? 'text-gray-300 cursor-default' : ''}
-                  ${isSelected ? 'bg-blue-600 text-white font-semibold' : ''}
-                  ${isAvailable && !isSelected && isCurrentMonth && !isPast ? 'text-blue-600 font-semibold hover:bg-blue-50 cursor-pointer' : ''}
-                  ${!isAvailable && isCurrentMonth && !isPast ? 'text-gray-400' : ''}
-                  ${isPast ? 'text-gray-300 cursor-not-allowed' : ''}
-                  ${isToday && !isSelected ? 'ring-2 ring-blue-400' : ''}
-                `}
-              >
-                {date.getDate()}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+                            return (
+                              <button
+                                key={index}
+                                onClick={() => {
+                                  if (isAvailable && !isPast) {
+                                    setSelectedDate(dateStr);
+                                    setSelectedTimeSlot(null); // Reset time selection when date changes
+                                  }
+                                }}
+                                disabled={!isAvailable || isPast || !isCurrentMonth}
+                                className={`
+                                  aspect-square flex items-center justify-center rounded-lg text-sm
+                                  ${!isCurrentMonth ? 'text-gray-300 cursor-default' : ''}
+                                  ${isSelected ? 'bg-blue-600 text-white font-semibold' : ''}
+                                  ${isAvailable && !isSelected && isCurrentMonth && !isPast ? 'text-blue-600 font-semibold hover:bg-blue-50 cursor-pointer' : ''}
+                                  ${!isAvailable && isCurrentMonth && !isPast ? 'text-gray-400' : ''}
+                                  ${isPast ? 'text-gray-300 cursor-not-allowed' : ''}
+                                  ${isToday && !isSelected ? 'ring-2 ring-blue-400' : ''}
+                                `}
+                              >
+                                {date.getDate()}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
 
-      {/* Time Zone Display */}
-      <div className="mt-4 text-sm text-gray-600">
-        <p className="font-medium">Time zone</p>
-        <p className="flex items-center mt-1">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clipRule="evenodd" />
-          </svg>
-          {Intl.DateTimeFormat().resolvedOptions().timeZone}
-        </p>
-      </div>
-    </div>
+                      {/* Time Zone Display */}
+                      <div className="mt-4 text-sm text-gray-600">
+                        <p className="font-medium">Time zone</p>
+                        <p className="flex items-center mt-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clipRule="evenodd" />
+                          </svg>
+                          {Intl.DateTimeFormat().resolvedOptions().timeZone}
+                        </p>
+                      </div>
+                    </div>
 
-    {/* Time Slots - Right Side */}
-    <div className={`w-[180px] ${!selectedDate ? 'invisible' : ''}`}>
-      {selectedDate && (
-        <>
-          <h4 className="font-medium mb-3">
-            {new Date(selectedDate).toLocaleDateString('en-US', {
-              weekday: 'long',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </h4>
-          <div className="border border-gray-200 rounded-lg p-2">
-            {timeSlots.map(slot => {
-              const isSelected = selectedTimeSlot === slot.time;
-              return (
-                <button
-                  key={slot.time}
-                  onClick={() => slot.available && setSelectedTimeSlot(slot.time)}
-                  disabled={!slot.available}
-                  className={`
-                    w-full py-2 px-3 mb-2 rounded-lg text-sm font-medium transition-all
-                    ${isSelected
-                      ? 'bg-blue-600 text-white'
-                      : slot.available
-                        ? 'bg-white border border-blue-600 text-blue-600 hover:bg-blue-50'
-                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    }
-                  `}
-                >
-                  {slot.time}
-                </button>
-              );
-            })}
-          </div>
-        </>
-      )}
-    </div>
-  </div>
-</div>
+                      {/* Time Slots - Right Side - Fixed width, no scrollbar */}
+                      <div className={`w-[180px] ${!selectedDate ? 'invisible' : ''}`}>
+                        {selectedDate && (
+                          <>
+                            <h4 className="font-medium mb-3">
+                              {new Date(selectedDate).toLocaleDateString('en-US', {
+                                weekday: 'long',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </h4>
+                            <div className="border border-gray-200 rounded-lg p-2">
+                              {timeSlots.map(slot => {
+                                const isSelected = selectedTimeSlot === slot.time;
 
+                                return (
+                                  <button
+                                    key={slot.time}
+                                    onClick={() => {
+                                      if (slot.available) {
+                                        setSelectedTimeSlot(slot.time);
+
+          
+                                      }
+                                    }}
+                                    disabled={!slot.available}
+                                    className={`
+                                      w-full py-2 px-3 mb-2 rounded-lg text-sm font-medium transition-all
+                                      ${isSelected
+                                        ? 'bg-blue-600 text-white'
+                                        : slot.available
+                                          ? 'bg-white border border-blue-600 text-blue-600 hover:bg-blue-50'
+                                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                      }
+                                    `}
+                                  >
+                                    {slot.time}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Continue Button */}
                   {selectedTimeSlot && selectedDate && (
