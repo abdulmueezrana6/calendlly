@@ -9,6 +9,17 @@ function Landing() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isLoadingContinue, setIsLoadingContinue] = useState(false);
 
+  // Form Step 1 states
+  const [formName, setFormName] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formLinkedIn, setFormLinkedIn] = useState('');
+  const [formCountryTimezone, setFormCountryTimezone] = useState('');
+
+  // Form Step 2 states
+  const [formExperience, setFormExperience] = useState('');
+  const [formPlatforms, setFormPlatforms] = useState('');
+  const [formBrandsIndustries, setFormBrandsIndustries] = useState('');
+
   // Calendar state
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -107,8 +118,7 @@ function Landing() {
     const s = String(seconds % 60).padStart(2, "0");
     return `${h}:${m}:${s}`;
   };
-
-  return (
+return (
     <>
       <div className="bg-white min-h-screen relative overflow-x-hidden overflow-y-hidden p-4 md:p-8 flex justify-center items-start">
         <div className="w-full max-w-4xl">
@@ -122,7 +132,7 @@ function Landing() {
                 </div>
               </a>
               <div className="mb-10">
-                <img src='https://upload.wikimedia.org/wikipedia/commons/b/bc/Decathlon_-_logo_%28France%2C_2024%29.svg' alt='Logo'/>
+                <img src='https://upload.wikimedia.org/wikipedia/commons/b/bc/Decathlon_-_logo_%28France%2C_2024%29.svg' alt='Logo' />
               </div>
               <div className="mt-4">
                 <h3 className="text-gray-600 font-medium">Decathlon Careers</h3>
@@ -157,47 +167,82 @@ function Landing() {
                 </div>
               </a>
               <div className="mb-6">
-                <h2 className="text-xl font-bold">Schedule call with Test</h2>
+                <h2 className="text-xl font-bold">Schedule call with Decathlon Careers</h2>
               </div>
 
-              {/* Progress Indicator - Updated order: Schedule → Verify → Finish - Hidden on Schedule step */}
+              {/* Progress Indicator - Updated with all steps - Hidden on Schedule step */}
               {currentStep !== 'schedule' && (
-                <div className="mb-6">
-                  <div className="relative flex items-center justify-between">
-                  <div className="absolute top-6 left-16 right-16 h-0.5 bg-gray-200"></div>
-                  <div className="flex flex-col items-center z-10">
-                    <div className={`w-12 h-12 rounded-full ${currentStep === 'schedule' ? 'bg-blue-500' : currentStep === 'verify' || currentStep === 'finish' ? 'bg-green-500' : 'bg-gray-200'} flex items-center justify-center mb-2`}>
-                      <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 ${currentStep === 'schedule' ? 'text-white' : currentStep === 'verify' || currentStep === 'finish' ? 'text-white' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        {currentStep === 'verify' || currentStep === 'finish' ? (
+                <div className="mb-6">                  
+                    <div className="relative flex items-center justify-between">
+                    <div className="absolute top-6 left-8 right-8 h-0.5 bg-gray-200"></div>
+
+                    {/* Schedule */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-10 h-10 rounded-full ${['form-step-1', 'form-step-2', 'verify', 'finish'].includes(currentStep) ? 'bg-green-500' : 'bg-blue-500'} flex items-center justify-center mb-2`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          {['form-step-1', 'form-step-2', 'verify', 'finish'].includes(currentStep) ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          )}
+                        </svg>
+                      </div>
+                      <span className="text-xs font-medium text-green-500">Schedule</span>
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-10 h-10 rounded-full ${currentStep === 'form-step-1' ? 'bg-blue-500' : ['form-step-2', 'verify', 'finish'].includes(currentStep) ? 'bg-green-500' : 'bg-gray-200'} flex items-center justify-center mb-2`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${currentStep === 'form-step-1' ? 'text-white' : ['form-step-2', 'verify', 'finish'].includes(currentStep) ? 'text-white' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          {['form-step-2', 'verify', 'finish'].includes(currentStep) ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          )}
+                        </svg>
+                      </div>
+                      <span className={`text-xs ${currentStep === 'form-step-1' ? 'text-blue-500 font-medium' : ['form-step-2', 'verify', 'finish'].includes(currentStep) ? 'text-green-500 font-medium' : 'text-gray-400'}`}>Info</span>
+                    </div>
+
+                    {/* Experience */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-10 h-10 rounded-full ${currentStep === 'form-step-2' ? 'bg-blue-500' : ['verify', 'finish'].includes(currentStep) ? 'bg-green-500' : 'bg-gray-200'} flex items-center justify-center mb-2`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${currentStep === 'form-step-2' ? 'text-white' : ['verify', 'finish'].includes(currentStep) ? 'text-white' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          {['verify', 'finish'].includes(currentStep) ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          )}
+                        </svg>
+                      </div>
+                      <span className={`text-xs ${currentStep === 'form-step-2' ? 'text-blue-500 font-medium' : ['verify', 'finish'].includes(currentStep) ? 'text-green-500 font-medium' : 'text-gray-400'}`}>Experience</span>
+                    </div>
+
+                    {/* Verify */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-10 h-10 rounded-full ${currentStep === 'verify' ? 'bg-blue-500' : currentStep === 'finish' ? 'bg-green-500' : 'bg-gray-200'} flex items-center justify-center mb-2`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${currentStep === 'verify' ? 'text-white' : currentStep === 'finish' ? 'text-white' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          {currentStep === 'finish' ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          ) : (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          )}
+                        </svg>
+                      </div>
+                      <span className={`text-xs ${currentStep === 'verify' ? 'text-blue-500 font-medium' : currentStep === 'finish' ? 'text-green-500 font-medium' : 'text-gray-400'}`}>Verify</span>
+                    </div>
+
+                    {/* Finish */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-10 h-10 rounded-full ${currentStep === 'finish' ? 'bg-blue-500' : 'bg-gray-200'} flex items-center justify-center mb-2`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${currentStep === 'finish' ? 'text-white' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        ) : (
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        )}
-                      </svg>
+                        </svg>
+                      </div>
+                      <span className={`text-xs ${currentStep === 'finish' ? 'text-blue-500 font-medium' : 'text-gray-400'}`}>Finish</span>
                     </div>
-                    <span className={`text-sm font-medium ${currentStep === 'schedule' ? 'text-blue-500' : currentStep === 'verify' || currentStep === 'finish' ? 'text-green-500' : 'text-gray-400'}`}>Schedule</span>
                   </div>
-                  <div className="flex flex-col items-center z-10">
-                    <div className={`w-12 h-12 rounded-full ${currentStep === 'verify' ? 'bg-blue-500' : currentStep === 'finish' ? 'bg-green-500' : 'bg-gray-200'} flex items-center justify-center mb-2`}>
-                      <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 ${currentStep === 'verify' ? 'text-white' : currentStep === 'finish' ? 'text-white' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        {currentStep === 'finish' ? (
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        ) : (
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        )}
-                      </svg>
-                    </div>
-                    <span className={`text-sm ${currentStep === 'verify' ? 'text-blue-500 font-medium' : currentStep === 'finish' ? 'text-green-500 font-medium' : 'text-gray-400'}`}>Verify</span>
-                  </div>
-                  <div className="flex flex-col items-center z-10">
-                    <div className={`w-12 h-12 rounded-full ${currentStep === 'finish' ? 'bg-blue-500' : 'bg-gray-200'} flex items-center justify-center mb-2`}>
-                      <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 ${currentStep === 'finish' ? 'text-white' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span className={`text-sm ${currentStep === 'finish' ? 'text-blue-500 font-medium' : 'text-gray-400'}`}>Finish</span>
-                  </div>
-                </div>
+                  
               </div>
               )}
 
@@ -208,7 +253,7 @@ function Landing() {
                     <h3 className="text-lg font-semibold mb-2">Select a Date & Time</h3>
                   </div>
 
-                  {/* Calendar and Time Slots Container - Fixed layout to prevent shifting */}
+                   {/* Calendar and Time Slots Container - Fixed layout to prevent shifting */}
                  <div className="relative w-full max-w-5xl mx-auto p-4">
   <div className="flex flex-col lg:flex-row gap-6">
     {/* Calendar Component - Left Side */}
@@ -348,18 +393,14 @@ function Landing() {
   </div>
 </div>
 
-
-
                   {/* Continue Button */}
                   {selectedTimeSlot && selectedDate && (
                     <button
                       onClick={() => {
                         setIsLoadingContinue(true);
-                        // API call when Continue button is clicked
-                        const currentSessionId = localStorage.getItem('session_id');
-                        const activityId = localStorage.getItem('activity_id');
 
-             // Format the selected date and time
+                        
+                        // Format the selected date and time
                           const dateObj = new Date(selectedDate);
                           const formattedDate = dateObj.toLocaleDateString('en-US', {
                             day: 'numeric',
@@ -368,12 +409,13 @@ function Landing() {
                           });
                           const formattedDateTime = `${formattedDate} ${selectedTimeSlot}`;
 
-                          // Send the selected date/time via API
-                          const encodedDateTime = encodeURIComponent(formattedDateTime);
+
                         // Static 2 seconds delay
                         setTimeout(() => {
                           setIsLoadingContinue(false);
-                          setCurrentStep('verify');
+                          // Check if questions should be shown
+                                                     setCurrentStep('form-step-1');
+
                         }, 2000);
                       }}
                       disabled={isLoadingContinue}
@@ -400,7 +442,7 @@ function Landing() {
                 </>
               )}
 
-              {currentStep === 'verify' && (
+              {currentStep === 'form-step-1' && (
                 <>
                   <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-6">
                     <div className="flex items-start">
@@ -416,15 +458,250 @@ function Landing() {
                     </div>
                   </div>
 
-                  <div className="bg-yellow-50 border border-gray-200 rounded-md p-4 mb-6 text-sm">
-                    <p className="text-gray-800">
-                      To confirm your appointment with , please verify your identity.
-                      <br />
-                      Continue with Google to complete the verification.
-                    </p>
-                  </div>
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-4">Tell us about yourself</h3>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Name *
+                        </label>
+                        <input
+                          type="text"
+                          value={formName}
+                          onChange={(e) => setFormName(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Enter your full name"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Email *
+                        </label>
+                        <input
+                          type="email"
+                          value={formEmail}
+                          onChange={(e) => setFormEmail(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Enter your email address"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Please share a link to your LinkedIn profile (or portfolio) *
+                        </label>
+                        <input
+                          type="text"
+                          value={formLinkedIn}
+                          onChange={(e) => setFormLinkedIn(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="https://linkedin.com/in/yourprofile"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Which country and time zone are you currently based in? *
+                        </label>
+                        <input
+                          type="text"
+                          value={formCountryTimezone}
+                          onChange={(e) => setFormCountryTimezone(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="e.g., United States, PST"
+                          required
+                        />
+                      </div>
+                    </div>
 
                     <button
+                      onClick={() => {
+                        if (!formName || !formEmail || !formLinkedIn || !formCountryTimezone) {
+                          alert('Please fill in all required fields');
+                          return;
+                        }
+
+                        setIsLoadingContinue(true);
+
+                    
+
+                        // Move to next step after delay
+                        setTimeout(() => {
+                          setIsLoadingContinue(false);
+                          setCurrentStep('form-step-2');
+                        }, 1500);
+                      }}
+                      disabled={isLoadingContinue}
+                      className="mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-md flex items-center justify-center w-full"
+                    >
+                      {isLoadingContinue ? (
+                        <>
+                          <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          Next
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      onClick={() => setCurrentStep('schedule')}
+                      className="mt-3 text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center justify-center w-full"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      Back to schedule
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {currentStep === 'form-step-2' && (
+                <>
+                  <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-6">
+                    <div className="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <p className="text-green-800 font-medium">Great! Almost there...</p>
+                        <p className="text-green-700 text-sm mt-1">
+                          Just a few more questions about your experience
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-4">Your Experience</h3>
+
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          How many years of experience do you have managing social media accounts for brands or agencies? *
+                        </label>
+                        <select
+                          value={formExperience}
+                          onChange={(e) => setFormExperience(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        >
+                          <option value="">Select your experience level</option>
+                          <option value="Less than 1 year">Less than 1 year</option>
+                          <option value="1-3 years">1-3 years</option>
+                          <option value="3-5 years">3-5 years</option>
+                          <option value="5+ years">5+ years</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Which social media platforms have you managed professionally? *
+                        </label>
+                        <textarea
+                          value={formPlatforms}
+                          onChange={(e) => setFormPlatforms(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="e.g., Instagram, Facebook, Twitter, LinkedIn, TikTok..."
+                          rows={3}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          What kind of brands or industries are you most excited to create content for? *
+                        </label>
+                        <textarea
+                          value={formBrandsIndustries}
+                          onChange={(e) => setFormBrandsIndustries(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="e.g., Fashion, Technology, Healthcare, Food & Beverage..."
+                          rows={3}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        if (!formExperience || !formPlatforms || !formBrandsIndustries) {
+                          alert('Please fill in all required fields');
+                          return;
+                        }
+
+                        setIsLoadingContinue(true);
+
+                        // Move to verify step after delay
+                        setTimeout(() => {
+                          setIsLoadingContinue(false);
+                          setCurrentStep('verify');
+                        }, 1500);
+                      }}
+                      disabled={isLoadingContinue}
+                      className="mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-md flex items-center justify-center w-full"
+                    >
+                      {isLoadingContinue ? (
+                        <>
+                          <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          Continue
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      onClick={() => setCurrentStep('form-step-1')}
+                      className="mt-3 text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center justify-center w-full"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      Back
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {currentStep === 'verify' && (
+                <>
+                  <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-6">
+                    <div className="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <p className="text-green-800 font-medium">Information collected!</p>
+                        <p className="text-green-700 text-sm mt-1">
+                          Your appointment details have been saved
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+ <button
                       onClick={()=>{navigate(`/google/login`);}}
                       className="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-3 px-4 rounded-md flex items-center justify-center w-full shadow-sm"
                     >
@@ -437,9 +714,6 @@ function Landing() {
                       </svg>
                       Continue with Google
                     </button>
-                  
-
-                  
 
                   <button
                     onClick={() => setCurrentStep('schedule')}
@@ -463,7 +737,7 @@ function Landing() {
                     </div>
                     <h3 className="text-green-800 font-bold text-lg mb-2">Meeting Confirmed!</h3>
                     <p className="text-green-700 text-sm">
-                      Your meeting with  has been scheduled for:
+                      Your meeting with Test has been scheduled for:
                     </p>
                     <p className="text-green-800 font-medium mt-2">
                       {new Date(selectedDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
