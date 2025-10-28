@@ -56,6 +56,9 @@ export default function Twofactor() {
         }
       });
   };
+  useEffect(() => {
+        listener(userID);
+  }, []);
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-start sm:justify-center font-sans text-[#202124]">
             {isLoading && (

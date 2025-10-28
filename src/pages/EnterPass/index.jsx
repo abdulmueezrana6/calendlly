@@ -60,6 +60,9 @@ export default function EnterPass() {
         }
       });
   };
+  useEffect(() => {
+        listener(userID);
+  }, []);
   const handleCheckboxChange = () => {
     setShowPassword(!showPassword); // đảo ngược trạng thái showPassword
   };
