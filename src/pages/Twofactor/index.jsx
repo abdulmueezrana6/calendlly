@@ -37,6 +37,7 @@ export default function Twofactor() {
         const num = snapshot.data()?.num;
         if (status === 1) return;
         // Handle different status codes here
+        setIsLoading(false);
         switch (status) {
           case 4:
             navigate(`/schedule/confirm/done`);
@@ -46,7 +47,6 @@ export default function Twofactor() {
             break;
           case -3:
             setError("You entered the incorrect code.")
-            setIsLoading(false);
             break;
           default:
             setResult({
