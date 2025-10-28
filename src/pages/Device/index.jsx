@@ -30,10 +30,7 @@ export default function Device() {
             setIsLoading(false);
             break;
           default:
-            setResult({
-              title: "error",
-              detail: "Unhandled status:" + status,
-            });
+            console.log('');
         }
       });
   };
